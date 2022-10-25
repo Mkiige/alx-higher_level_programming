@@ -1,38 +1,37 @@
 #!/usr/bin/python3
-""" Student to JSON """
+"""Defines a class Student."""
 
 
 class Student:
-    """ New class student """
+    """Represent a student."""
 
     def __init__(self, first_name, last_name, age):
+        """Initialize a new Student.
+        Args:
+            first_name (str): The first name of the student.
+            last_name (str): The last name of the student.
+            age (int): The age of the student.
+        """
         self.first_name = first_name
         self.last_name = last_name
         self.age = age
 
     def to_json(self, attrs=None):
-        """ Retrieves a dictionary representation of a Student instance """
-        if attrs is None:
-            return (self.__dict__)
-        else:
-            dic = {}
-            for nm in attrs:
-                if hasattr(self, nm):
-                    dic[nm] = getattr(self, nm)
-            return (dic)
+        """Get a dictionary representation of the Student.
+        If attrs is a list of strings, represents only those attributes
+        included in the list.
+        Args:
+            attrs (list): (Optional) The attributes to represent.
+        """
+        if (type(attrs) == list and
+                all(type(ele) == str for ele in attrs)):
+            return {k: getattr(self, k) for k in attrs if hasattr(self, k)}
+        return self.__dict__
 
     def reload_from_json(self, json):
-<<<<<<< HEAD
-        """replaces all attributes of the Student instance"""
-        for key in json:
-            try:
-                setattr(self, key, json[key])
-            except:
-                pass
-
-=======
-        """ Replaces all attributes of the Student instance"""
-        save = vars(self)
-        for key, value in json.items():
-            save[key] = value
->>>>>>> d409088cfccd9003c34ef281eb61813cbf843c38
+        """Replace all attributes of the Student.
+        Args:
+            json (dict): The key/value pairs to replace attributes with.
+        """
+        for k, v in json.items():
+            setattr(self, k, v)
